@@ -1,0 +1,34 @@
+{
+  "name": "ff-engine",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Zhang Yang",
+  "module": "dist/index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc",
+    "watch": "tsc --watch --preserveWatchOutput"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^8.2.4",
+    "@tsconfig/recommended": "^1.0.2",
+    "tslib": "^2.5.0",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+  }
+}

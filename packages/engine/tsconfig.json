@@ -1,0 +1,19 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "lib": ["ES2020","dom"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "types",
+    "rootDirs": [
+      "src/"
+    ],
+    "sourceMap": true,
+    "outDir": "dist",
+//    "noUncheckedIndexedAccess": true
+  }
+}
