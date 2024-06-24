@@ -43,6 +43,7 @@ import padStartCompute from './pad-start';
 import defaultToCompute from './defaultTo';
 import stateMachineCompute from './state-machine';
 import mapCompute from './map';
+import markdownCompute from './markdown';
 
 //compute generators
 export const _createElement = createElementNode;
@@ -99,3 +100,5 @@ export const _await = awaitCompute;
 export const _stateMachine = stateMachineCompute;
 
 export const _map = mapCompute;
+
+export const _markdown = markdownCompute;
