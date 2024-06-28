@@ -281,31 +281,32 @@ export const runFlow = (
     const execNode = flow.nodes[execId];
     const execPath = [execId];
     let nodeResult: MaybePromise<Either<NodeOutputs>> | undefined = undefined;
-    if (execNode.resourceId === ReservedNodeResourceId.ReturnIf) {
-      const conditionPort = execNode.inputPorts[0];
-      const condition = readDestPort(conditionPort, execPath);
-      if (isError(condition)) {
-        return condition;
-      }
-      if (isOk(condition) && condition.value) {
-        const outputs: Record<string, PortValue> = {};
-        for (const inputPort of execNode.inputPorts.slice(1)) {
-          if (
-            flow.outputPorts.map((x) => x.key).includes(inputPort.key) // do not return state registers
-          ) {
-            const val = readDestPort(inputPort, execPath);
-            if (isError(val)) {
-              return val;
-            }
-            if (isOk(val)) {
-              outputs[inputPort.key] = val.value;
-            }
-          }
-        }
-        return Ok(outputs);
-      }
-      nodeResult = Ok({ outputs: {}, subFlowOutputs: {} });
-    }
+    // if (execNode.resourceId === ReservedNodeResourceId.ReturnIf) {
+    //   const conditionPort = execNode.inputPorts[0];
+    //   const condition = readDestPort(conditionPort, execPath);
+    //   console.log("return if's condition", condition);
+    //   if (isError(condition)) {
+    //     return condition;
+    //   }
+    //   if (isOk(condition) && condition.value) {
+    //     const outputs: Record<string, PortValue> = {};
+    //     for (const inputPort of execNode.inputPorts.slice(1)) {
+    //       if (
+    //         flow.outputPorts.map((x) => x.key).includes(inputPort.key) // do not return state registers
+    //       ) {
+    //         const val = readDestPort(inputPort, execPath);
+    //         if (isError(val)) {
+    //           return val;
+    //         }
+    //         if (isOk(val)) {
+    //           outputs[inputPort.key] = val.value;
+    //         }
+    //       }
+    //     }
+    //     return Ok(outputs);
+    //   }
+    //   nodeResult = Ok({ outputs: {}, subFlowOutputs: {} });
+    // }
 
     // 1.1 read shift register
     const stateRegisterData: Record<string, PortValue> = {};
@@ -422,7 +423,35 @@ export const runFlow = (
     while (index < flow.executionPath.length) {
       // for (const execId of flow.executionPath) {
       const execId = flow.executionPath[index];
-      if (flow.nodes[execId].resourceId === ReservedNodeResourceId.GoBackIf) {
+      if (flow.nodes[execId].resourceId === ReservedNodeResourceId.ReturnIf) {
+        const execNode = flow.nodes[execId];
+        const conditionPort = execNode.inputPorts[0];
+        const condition = readDestPort(conditionPort, [execId]);
+        console.log("return if's condition", condition);
+        if (isError(condition)) {
+          return condition;
+        }
+        if (isOk(condition) && condition.value) {
+          const outputs: Record<string, PortValue> = {};
+          for (const inputPort of execNode.inputPorts.slice(1)) {
+            if (
+              flow.outputPorts.map((x) => x.key).includes(inputPort.key) // do not return state registers
+            ) {
+              const val = readDestPort(inputPort, [execId]);
+              if (isError(val)) {
+                return val;
+              }
+              if (isOk(val)) {
+                outputs[inputPort.key] = val.value;
+              }
+            }
+          }
+          return Ok(outputs);
+        }
+        index = index + 1;
+      } else if (
+        flow.nodes[execId].resourceId === ReservedNodeResourceId.GoBackIf
+      ) {
         const execNode = flow.nodes[execId];
         const conditionPort = execNode.inputPorts[0];
         const condition = readDestPort(conditionPort, [execId]);
