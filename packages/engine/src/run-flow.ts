@@ -79,14 +79,14 @@ export const runFlow = (
       (x) => flow.connectionMap[x] === sourcePortId
     );
     for (const destPortId of destPortIds) {
-      console.log('dispatch', destPortId, value);
+      // console.log('dispatch', destPortId, value);
       bufferStore.set(destPortId, value);
       const destPort = flow.ports[destPortId];
       if (destPort.nodeId) {
         const nodeId = destPort.nodeId;
         const destNode = flow.nodes[nodeId];
         if (destNode.type === NodeType.Passive && !destPort.subFlowId) {
-          console.log('run passive execution node', nodeId, value);
+          // console.log('run passive execution node', nodeId, value);
           const execPath = [Math.random().toString()];
           const res = runNode(
             context,
@@ -108,6 +108,11 @@ export const runFlow = (
             );
           }
           executionStateStore.set(nodeId, res);
+          console.log(
+            '[Node Result] passive execution node result',
+            nodeId,
+            res
+          );
         } else {
           if (nodeListeners[nodeId]) {
             nodeListeners[nodeId].next(destPort.id, value, destPort.subFlowId);
@@ -147,7 +152,7 @@ export const runFlow = (
       if (dataNode) {
         // compute if no cached data
         if (!tempStore.has(portHash)) {
-          console.log('compute if no cached data', portHash);
+          // console.log('compute if no cached data', portHash);
           const nodeResult = runNode(
             context,
             dataNode,
@@ -160,7 +165,11 @@ export const runFlow = (
           if (isPromise(nodeResult)) {
             throw new Error('Sync node should not return a promise');
           }
-
+          console.log(
+            '[Node Result] data node result',
+            port.nodeId,
+            nodeResult
+          );
           dataNode.outputPorts
             .filter((x) => !x.isStream)
             .map((outputPort) => {
@@ -206,7 +215,9 @@ export const runFlow = (
     const fromPortId = flow.connectionMap[port.id];
     if (fromPortId) {
       const fromPort = flow.ports[fromPortId];
-      return readSourcePort(fromPort, executionIds);
+      const result = readSourcePort(fromPort, executionIds);
+      console.log('[Port Read]', fromPortId, result);
+      return result;
     }
     return Nothing();
   };
@@ -233,6 +244,7 @@ export const runFlow = (
       return nodeResult;
     }
     executionStateStore.set(execId, nodeResult);
+    console.log('[Node Result] set  node result', execId, nodeResult);
   }
 
   // stream nodes
@@ -386,6 +398,11 @@ export const runFlow = (
           }
         } else {
           const nodeResult = await runExecNode(execId);
+          console.log(
+            '[Node Result] execution node result',
+            execId,
+            nodeResult
+          );
           if (isError(nodeResult)) {
             resolve(nodeResult);
           }
@@ -422,6 +439,7 @@ export const runFlow = (
         if (isPromise(nodeResult)) {
           throw new Error('Sync node should not return a promise');
         }
+        console.log('[Node Result] execution node result', execId, nodeResult);
         if (isError(nodeResult)) {
           return nodeResult;
         }
