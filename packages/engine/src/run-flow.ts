@@ -55,9 +55,12 @@ export const runFlow = (
     },
     complete: () => {
       if (flow.executionPath.length > 0) {
-        throw new Error(
+        console.warn(
           'Current flow is a procedural flow, should not receive complete signal'
         );
+        // throw new Error(
+        //   'Current flow is a procedural flow, should not receive complete signal'
+        // );
       }
       for (const listener of Object.values(nodeListeners)) {
         listener.complete();
