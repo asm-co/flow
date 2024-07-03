@@ -44,6 +44,7 @@ import defaultToCompute from './defaultTo';
 import stateMachineCompute from './state-machine';
 import mapCompute from './map';
 import markdownCompute from './markdown';
+import fromObjectCompute from './from-object';
 
 //compute generators
 export const _createElement = createElementNode;
@@ -82,6 +83,7 @@ export const _invoke = invokeCompute;
 export const _new = newCompute;
 export const _toArray = toArrayCompute;
 export const _toObject = toObjectCompute;
+export const _fromObject = fromObjectCompute;
 export const _rxSequentially = sequentiallyCompute;
 export const _rxOf = rxOfCompute;
 export const _rxMapTo = rxMapToCompute;

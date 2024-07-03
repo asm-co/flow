@@ -28,7 +28,7 @@ export function getRandomString(length = 10) {
 }
 
 export const isPromise = <T>(obj: any): obj is Promise<T> =>
-  typeof obj['then'] === 'function';
+  obj && typeof obj['then'] === 'function';
 
 export const Err = (errors: RuntimeError[]): ResultError => ({
   __kind: 'error',
