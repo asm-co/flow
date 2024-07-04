@@ -30,7 +30,7 @@ const getReactRenderCompute: JsNodeComputeGenerator = (
       onRx({
         next: (portKey, value, subFlowId) => {
           if (subFlowId && subFlowInfo.bufferInputKeys?.includes(portKey)) {
-            bufferDispatchMap[portKey](value);
+            bufferDispatchMap[portKey]?.(value);
           }
         },
       });
