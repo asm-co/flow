@@ -130,7 +130,8 @@ export const runNode = (
     node.resourceId === ReservedNodeResourceId.Import ||
     node.resourceId === ReservedNodeResourceId.JsCodeSync ||
     node.resourceId === ReservedNodeResourceId.JsExpression ||
-    node.resourceId === ReservedNodeResourceId.JsCodeAsync
+    node.resourceId === ReservedNodeResourceId.JsCodeAsync ||
+    node.resourceId === ReservedNodeResourceId.ImportContent
       ? // node.resourceId === ReservedNodeResourceId.JsExpressionAsync
         context.providers.getNodeNativeComputeFunction(nodeId)
       : context.providers.getNodeNativeComputeFunction(node.resourceId);

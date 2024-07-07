@@ -29,6 +29,7 @@ export enum ReservedPortKey {
 
 export enum ReservedNodeResourceId {
   Import = '__IMPORT',
+  ImportContent = '__IMPORT_CONTENT',
   // computation is by engine
   Abstract = '__ABSTRACT',
   // ExceptionIf = '__EXCEPTION_IF', // throw exception, has a condition input port and  an error input port
