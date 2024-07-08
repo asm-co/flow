@@ -250,28 +250,28 @@ export const runFlow = (
     console.log('[Node Result] set  node result', execId, nodeResult);
   }
 
-  // stream nodes
-  for (const streamNode of Object.values(flow.nodes).filter(
-    (x) => x.type === NodeType.Stream
-  )) {
-    const nodeResult = runNode(
-      context,
-      streamNode,
-      (port, scopedExecutionIds) => readDestPort(port, scopedExecutionIds),
-      (port, value) => dispatch(port.id, value),
-      (callback) => (nodeListeners[streamNode.id] = callback),
-      getSubFlowState,
-      setSubFlowState
-    );
-    if (isPromise(nodeResult)) {
-      throw new Error('Stream node should not return a promise');
-    }
+  // // stream nodes
+  // for (const streamNode of Object.values(flow.nodes).filter(
+  //   (x) => x.type === NodeType.Stream
+  // )) {
+  //   const nodeResult = runNode(
+  //     context,
+  //     streamNode,
+  //     (port, scopedExecutionIds) => readDestPort(port, scopedExecutionIds),
+  //     (port, value) => dispatch(port.id, value),
+  //     (callback) => (nodeListeners[streamNode.id] = callback),
+  //     getSubFlowState,
+  //     setSubFlowState
+  //   );
+  //   if (isPromise(nodeResult)) {
+  //     throw new Error('Stream node should not return a promise');
+  //   }
 
-    // 1.3 save registers
-    if (isError(nodeResult)) {
-      return nodeResult;
-    }
-  }
+  //   // 1.3 save registers
+  //   if (isError(nodeResult)) {
+  //     return nodeResult;
+  //   }
+  // }
 
   // only send ready signals when current flow is a procedural flow
   if (flow.executionPath.length > 0) {

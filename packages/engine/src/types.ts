@@ -2,8 +2,8 @@ export enum NodeType {
   Data = 'D', //数据
   ExecutionSync = 'ES', //执行
   ExecutionAsync = 'EA', //执行
-  Stream = 'S', // （数据）流
-  Unknown = 'U', //无效
+  // Stream = 'S', // （数据）流
+  // Unknown = 'U', //无效
   Setup = 'ST', // setup execution
   Passive = 'P', // passive execution
 }
