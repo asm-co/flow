@@ -14,6 +14,7 @@ const getComponentCompute: JsNodeComputeGenerator = (
   simpleNodeNativeCompute2NodeNativeCompute(
     ({ node, subFlowGroupFunctions, onRx, readStreamInputSnapshot }) => {
       const createElement = imports.createElement;
+      const ref = (imports as any).useRef(null);
       const useSyncExternalStore = imports.useSyncExternalStore;
       const subFlowInfo = Object.values(node.subFlowGroups)[0][0];
       const subFlowFunc = Object.values(subFlowGroupFunctions)[0][0];
@@ -28,7 +29,6 @@ const getComponentCompute: JsNodeComputeGenerator = (
       });
 
       const renderFunc = () => {
-        console.log('render component...');
         const externalStates: Record<string, PortValue> = {};
         for (const bufferInputKey of subFlowInfo.bufferInputKeys ?? []) {
           const port = node.inputPorts.find((x) => x.key === bufferInputKey)!;
@@ -42,7 +42,6 @@ const getComponentCompute: JsNodeComputeGenerator = (
                 subFlowInfo.subFlowId,
                 port.key
               );
-              console.log('readBuffer', port.id, res);
               return res;
             }
           );
@@ -56,7 +55,8 @@ const getComponentCompute: JsNodeComputeGenerator = (
         return res['element'];
       };
       return {
-        element: createElement(renderFunc),
+        element: createElement(renderFunc, { ref }),
+        ref,
       };
     }
   );

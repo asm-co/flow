@@ -10,10 +10,8 @@ const getCreateElementCompute: JsNodeComputeGenerator = (
 ): NodeNativeComputeFunction =>
   simpleNodeNativeCompute2NodeNativeCompute(({ node, inputs, tx }) => {
     const createElement = (imports as any).createElement;
-    const props = { ...(inputs['props'] as any) };
-    if (inputs['twClass']) {
-      props['className'] = (imports as any).tw(inputs['twClass']);
-    }
+    const ref = (imports as any).useRef(null);
+    const props = { ...(inputs['props'] as any), ref };
     node.outputPorts
       .filter((x) => x.isStream)
       .map((port) => {
@@ -21,8 +19,12 @@ const getCreateElementCompute: JsNodeComputeGenerator = (
           tx(port.key, val);
         };
       });
+    const children = node.inputPorts
+      .filter((x) => x.key.startsWith('child_'))
+      .map((x) => inputs[x.key]);
     return {
-      element: createElement(inputs['type'], props, inputs['children']),
+      element: createElement(inputs['type'], props, ...children),
+      ref: ref,
     };
   });
 
