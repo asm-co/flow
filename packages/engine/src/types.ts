@@ -38,7 +38,7 @@ export enum ReservedNodeResourceId {
   ReturnIf = '__RETURN_IF', // has the same input ports as the parent flow's output ports
   GoBackIf = '__GO_BACK_IF', // has extra execution output port
   // IfElse = '__IF_ELSE', // if/else(data)
-  SubFlow = '__SUB_FLOW', // for embedded sub flow
+  // SubFlow = '__SUB_FLOW', // for embedded sub flow
   // IfThen = '__IF_THEN', // if/else(execution)
   // Try = '__TRY', // has a exception node output port
   // Register = '__REGISTER', // do nothing, only for register

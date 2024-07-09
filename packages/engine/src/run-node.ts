@@ -222,17 +222,18 @@ export const runNode = (
   // flow proxies
   else {
     let proxyFlow: RuntimeFlow | undefined;
-    if (node.resourceId === ReservedNodeResourceId.SubFlow) {
-      const subFlowId = Object.keys(node.subFlows)[0];
-      return runFlow(
-        context,
-        node.subFlows[subFlowId],
-        (key, scopedExecutionIds) =>
-          readInput(nodeInputPorts[key], scopedExecutionIds),
-        nodeTx,
-        (nextHandler) => registerRxListener(nextHandler)
-      );
-    } else if (node.resourceId === ReservedNodeResourceId.ExternalFlow) {
+    // if (node.resourceId === ReservedNodeResourceId.SubFlow) {
+    //   const subFlowId = Object.keys(node.subFlows)[0];
+    //   return runFlow(
+    //     context,
+    //     node.subFlows[subFlowId],
+    //     (key, scopedExecutionIds) =>
+    //       readInput(nodeInputPorts[key], scopedExecutionIds),
+    //     nodeTx,
+    //     (nextHandler) => registerRxListener(nextHandler)
+    //   );
+    // } else if (node.resourceId === ReservedNodeResourceId.ExternalFlow) {
+    if (node.resourceId === ReservedNodeResourceId.ExternalFlow) {
       proxyFlow = context.providers.getFlow(
         (node.properties as ExternalFlowData).flowId
       );
