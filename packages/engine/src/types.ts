@@ -75,7 +75,7 @@ export type CompiledNode = {
   subFlows: Record<string, CompiledFlow>;
   resourceId: string;
   properties: Record<string, any>;
-  isAsync: boolean;
+  await: boolean;
   staticInputs: Record<string, any>;
 };
 
