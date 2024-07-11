@@ -26,6 +26,7 @@ export enum ReservedPortKey {
   Params = '__PARAMS',
   Execution = '__EXECUTION',
   GoBack = '__GO_BACK',
+  Resolve = '__RESOLVE',
   // OnTx = '__ON_TX', // for reactive subflow in proactive flow
   // RunCount = '__RUN_COUNT',
 }
@@ -80,6 +81,7 @@ export type CompiledNode = {
   properties: Record<string, any>;
   asyncMode?: AsyncMode;
   staticInputs: Record<string, any>;
+  dataOutputPortKeys: string[];
 };
 
 export type CompiledFlow = {

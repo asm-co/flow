@@ -10,6 +10,7 @@ import type {
   SubFlowState,
 } from './types';
 import {
+  AsyncMode,
   FlowListener,
   Listener,
   NodeType,
@@ -338,7 +339,28 @@ export const runFlow = (
         setSubFlowState
       );
     }
-    if (isPromise(nodeResult)) {
+    if (execNode.asyncMode === AsyncMode.Promise && isPromise(nodeResult)) {
+      nodeResult.then((awaitedResult) => {
+        const resolvePort = execNode.outputPorts.find(
+          (x) => x.key === ReservedPortKey.Resolve
+        )!;
+        dispatch(resolvePort.id, awaitedResult);
+        if (isError(awaitedResult)) {
+          execNode.outputPorts
+            .filter((x) => execNode.dataOutputPortKeys.includes(x.key))
+            .map((port) => {
+              dispatch(port.id, awaitedResult);
+            });
+        } else {
+          execNode.outputPorts
+            .filter((x) => execNode.dataOutputPortKeys.includes(x.key))
+            .map((port) => {
+              dispatch(port.id, Ok(awaitedResult.value[port.key]));
+            });
+        }
+      });
+      return Ok({});
+    } else if (isPromise(nodeResult)) {
       return new Promise((resolve) => {
         (nodeResult as Promise<Either<NodeOutputs>>).then((awaitedResult) => {
           if (isError(awaitedResult)) {
