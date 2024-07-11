@@ -359,6 +359,7 @@ export const runFlow = (
             });
         }
       });
+      executionStateStore.set(execId, Ok({}));
       return Ok({});
     } else if (isPromise(nodeResult)) {
       return new Promise((resolve) => {
