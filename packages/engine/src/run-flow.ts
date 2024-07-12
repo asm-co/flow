@@ -17,7 +17,7 @@ import {
   ReservedNodeResourceId,
   ReservedPortKey,
 } from './types';
-import { isError, isNothing, isOk, isPromise, Nothing, Ok } from './utils';
+import { isError, isNothing, isOk, isPromise, Nothing, Ok, Err } from './utils';
 import { runNode } from './run-node';
 
 export const runFlow = (
@@ -196,6 +196,13 @@ export const runFlow = (
         // execution node
         const execNodeResult = executionStateStore.get(port.nodeId);
         if (!execNodeResult) {
+          if (flow.executionPath.includes(port.nodeId)) {
+            return Err([
+              {
+                message: `Execution node ${port.nodeId} output was read before run`,
+              },
+            ]);
+          }
           return Nothing();
           // throw new Error(`Execution node ${port.nodeId} is not found`);
         }
@@ -405,7 +412,11 @@ export const runFlow = (
     return Ok(flowOutputs);
   };
 
-  if (flow.isAsync) {
+  const isAsync = Object.values(flow.nodes).some(
+    (x) => x.asyncMode === AsyncMode.Await
+  );
+
+  if (isAsync) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve) => {
       let index = 0;
@@ -441,7 +452,7 @@ export const runFlow = (
           }
           index = index + 1;
         } else if (
-          flow.nodes[execId].resourceId === ReservedNodeResourceId.GoBackIf
+          flow.nodes[execId].resourceId === ReservedNodeResourceId.JumpIf
         ) {
           const execNode = flow.nodes[execId];
           const conditionPort = execNode.inputPorts[0];
@@ -450,7 +461,10 @@ export const runFlow = (
             resolve(condition);
           }
           if (isOk(condition) && condition.value) {
-            index = flow.executionPath.indexOf(flow.goBackMap[execId]);
+            index = flow.executionPath.indexOf(flow.jumpMap[execId]);
+            for (let i = index; i < flow.executionPath.length; i = i + 1) {
+              executionStateStore.delete(flow.executionPath[i]);
+            }
           } else {
             index = index + 1;
           }
@@ -507,7 +521,7 @@ export const runFlow = (
         }
         index = index + 1;
       } else if (
-        flow.nodes[execId].resourceId === ReservedNodeResourceId.GoBackIf
+        flow.nodes[execId].resourceId === ReservedNodeResourceId.JumpIf
       ) {
         const execNode = flow.nodes[execId];
         const conditionPort = execNode.inputPorts[0];
@@ -516,7 +530,7 @@ export const runFlow = (
           return condition;
         }
         if (isOk(condition) && condition.value) {
-          index = flow.executionPath.indexOf(flow.goBackMap[execId]);
+          index = flow.executionPath.indexOf(flow.jumpMap[execId]);
         } else {
           index = index + 1;
         }

@@ -25,7 +25,7 @@ export enum ReservedPortKey {
   LoopIndex = '__LOOP_INDEX',
   Params = '__PARAMS',
   Execution = '__EXECUTION',
-  GoBack = '__GO_BACK',
+  Jump = '__JUMP',
   Resolve = '__RESOLVE',
   // OnTx = '__ON_TX', // for reactive subflow in proactive flow
   // RunCount = '__RUN_COUNT',
@@ -40,7 +40,7 @@ export enum ReservedNodeResourceId {
   ExternalFlow = '__EXTERNAL_FLOW', // for linked flow
   // Loop = '__LOOP', // has a continue flow external output port
   ReturnIf = '__RETURN_IF', // has the same input ports as the parent flow's output ports
-  GoBackIf = '__GO_BACK_IF', // has extra execution output port
+  JumpIf = '__JUMP_IF', // has extra execution output port
   // IfElse = '__IF_ELSE', // if/else(data)
   // SubFlow = '__SUB_FLOW', // for embedded sub flow
   // IfThen = '__IF_THEN', // if/else(execution)
@@ -92,8 +92,8 @@ export type CompiledFlow = {
   executionPath: string[];
   inputPortIds: string[];
   outputPortIds: string[];
-  isAsync: boolean;
-  goBackMap: Record<string, string>;
+  // isAsync: boolean;
+  jumpMap: Record<string, string>;
 };
 
 export type ExternalFlowData = {

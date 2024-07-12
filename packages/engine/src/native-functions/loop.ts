@@ -1,11 +1,19 @@
-import { ReservedPortKey, SimpleNodeNativeComputeFunction } from '../types';
+import {
+  AsyncMode,
+  NodeType,
+  ReservedPortKey,
+  SimpleNodeNativeComputeFunction,
+} from '../types';
 import { isPromise, simpleNodeNativeCompute2NodeNativeCompute } from '../utils';
 
 const loopCompute: SimpleNodeNativeComputeFunction = ({
   node,
   subFlowGroupFunctions,
 }) => {
-  const isAsync = Object.values(node.subFlows)[0].isAsync;
+  const subFlow = Object.values(node.subFlows)[0];
+  const isAsync = Object.values(subFlow.nodes).some(
+    (x) => x.asyncMode === AsyncMode.Await
+  );
 
   if (isAsync) {
     // eslint-disable-next-line no-async-promise-executor

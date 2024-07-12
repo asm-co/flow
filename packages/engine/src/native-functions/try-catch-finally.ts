@@ -1,11 +1,14 @@
-import { SimpleNodeNativeComputeFunction } from '../types';
+import { AsyncMode, SimpleNodeNativeComputeFunction } from '../types';
 import { simpleNodeNativeCompute2NodeNativeCompute } from '../utils';
 
 const tryCatchFinallyComputeSync: SimpleNodeNativeComputeFunction = ({
   node,
   subFlowGroupFunctions,
 }) => {
-  const isAsync = Object.values(node.subFlows).some((x) => x.isAsync);
+  const subFlow = Object.values(node.subFlows)[0];
+  const isAsync = Object.values(subFlow.nodes).some(
+    (x) => x.asyncMode === AsyncMode.Await
+  );
 
   const tryFunc = subFlowGroupFunctions['try'][0];
   const catchFunc = subFlowGroupFunctions['catch'][0];
