@@ -87,7 +87,8 @@ export type CompiledNode = {
 export type CompiledFlow = {
   nodes: Record<string, CompiledNode>;
   ports: Record<string, CompiledPort>;
-  connectionMap: Record<string, string>;
+  // connectionMap: Record<string, string>;
+  connections: { from: string; to: string }[];
   executionPath: string[];
   inputPortIds: string[];
   outputPortIds: string[];

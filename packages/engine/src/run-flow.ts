@@ -79,9 +79,9 @@ export const runFlow = (
     subFlowStateStore.set(subFlowId, subFlowState);
 
   const dispatch = (sourcePortId: string, value: Either<PortValue>) => {
-    const destPortIds = Object.keys(flow.connectionMap).filter(
-      (x) => flow.connectionMap[x] === sourcePortId
-    );
+    const destPortIds = flow.connections
+      .filter((x) => x.from === sourcePortId)
+      .map((x) => x.to);
     for (const destPortId of destPortIds) {
       // console.log('dispatch', destPortId, value);
       bufferStore.set(destPortId, value);
@@ -216,7 +216,7 @@ export const runFlow = (
     if (port.isStream) {
       return bufferStore.get(port.id) ?? Nothing();
     }
-    const fromPortId = flow.connectionMap[port.id];
+    const fromPortId = flow.connections.find((x) => x.to === port.id)?.from;
     if (fromPortId) {
       const fromPort = flow.ports[fromPortId];
       const result = readSourcePort(fromPort, executionIds);
