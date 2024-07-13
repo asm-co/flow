@@ -34,13 +34,13 @@ export const createSubFlowGroupFunction =
       [ReservedPortKey.LoopIndex]: Ok(subFlowState.totalRuns),
     };
 
-    for (const key of subFlow.registerKeys) {
-      if (subFlowState.totalRuns === 0) {
-        subFlowStaticInputs[key] = readSubFlowInput(key, subFlowExecIds);
-      } else {
-        subFlowStaticInputs[key] = subFlowState.registerStates[key];
-      }
-    }
+    // for (const key of subFlow.registerKeys) {
+    //   if (subFlowState.totalRuns === 0) {
+    //     subFlowStaticInputs[key] = readSubFlowInput(key, subFlowExecIds);
+    //   } else {
+    //     subFlowStaticInputs[key] = subFlowState.registerStates[key];
+    //   }
+    // }
 
     const flowResult = runFlow(
       context,
@@ -87,16 +87,16 @@ export const createSubFlowGroupFunction =
 
           setSubFlowState({
             totalRuns: subFlowState.totalRuns + 1,
-            registerStates: Object.fromEntries(
-              subFlow.registerKeys.map((key) => [
-                key,
-                isError(result)
-                  ? result
-                  : result.value[key] === undefined
-                  ? Nothing()
-                  : Ok(result.value[key]),
-              ])
-            ),
+            // registerStates: Object.fromEntries(
+            //   subFlow.registerKeys.map((key) => [
+            //     key,
+            //     isError(result)
+            //       ? result
+            //       : result.value[key] === undefined
+            //       ? Nothing()
+            //       : Ok(result.value[key]),
+            //   ])
+            // ),
           });
           resolve(result);
         });
@@ -118,16 +118,16 @@ export const createSubFlowGroupFunction =
     }
     setSubFlowState({
       totalRuns: subFlowState.totalRuns + 1,
-      registerStates: Object.fromEntries(
-        subFlow.registerKeys.map((key) => [
-          key,
-          isError(flowResult)
-            ? flowResult
-            : flowResult.value[key] === undefined
-            ? Nothing()
-            : Ok(flowResult.value[key]),
-        ])
-      ),
+      // registerStates: Object.fromEntries(
+      //   subFlow.registerKeys.map((key) => [
+      //     key,
+      //     isError(flowResult)
+      //       ? flowResult
+      //       : flowResult.value[key] === undefined
+      //       ? Nothing()
+      //       : Ok(flowResult.value[key]),
+      //   ])
+      // ),
     });
     return flowResult;
   };

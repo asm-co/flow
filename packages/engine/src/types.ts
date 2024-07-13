@@ -78,7 +78,7 @@ export type CompiledNode = {
   >;
   subFlows: Record<string, CompiledFlow>;
   resourceId: string;
-  // properties: Record<string, any>;
+  properties: Record<string, any>;
   asyncMode?: AsyncMode;
   staticInputs: Record<string, any>;
   dataOutputPortKeys: string[];
@@ -109,7 +109,7 @@ export type RuntimeNode = CompiledNode & {
   inputPorts: RuntimePort[];
   outputPorts: RuntimePort[];
   subFlows: Record<string, RuntimeSubFlow>;
-  registerKeys: string[];
+  // registerKeys: string[];
 };
 
 export type RuntimeFlow = CompiledFlow & {
@@ -117,7 +117,7 @@ export type RuntimeFlow = CompiledFlow & {
   inputPorts: RuntimePort[];
   outputPorts: RuntimePort[];
   ports: Record<string, RuntimePort>;
-  registerKeys: string[];
+  // registerKeys: string[];
 };
 
 export type RuntimeSubFlowPort = RuntimePort & {
@@ -178,7 +178,7 @@ export type MaybePromise<T> = T | Promise<T>;
 
 export type SubFlowState = {
   totalRuns: number; // total runs of subflow, including error runs
-  registerStates: Record<string, Result<PortValue>>;
+  // registerStates: Record<string, Result<PortValue>>;
   // outputs: SubFlowOutputs; // success, skipped, failed
 };
 

@@ -320,19 +320,19 @@ export const runFlow = (
     // }
 
     // 1.1 read shift register
-    const stateRegisterData: Record<string, PortValue> = {};
-    for (const portKey of execNode.registerKeys) {
-      const port = execNode.inputPorts.find(
-        (x) => x.key === portKey && !x.subFlowId
-      )!;
-      const res = readDestPort(port, execPath);
-      if (isError(res)) {
-        return res;
-      }
-      if (isOk(res)) {
-        stateRegisterData[port.key] = res.value;
-      }
-    }
+    // const stateRegisterData: Record<string, PortValue> = {};
+    // for (const portKey of execNode.registerKeys) {
+    //   const port = execNode.inputPorts.find(
+    //     (x) => x.key === portKey && !x.subFlowId
+    //   )!;
+    //   const res = readDestPort(port, execPath);
+    //   if (isError(res)) {
+    //     return res;
+    //   }
+    //   if (isOk(res)) {
+    //     stateRegisterData[port.key] = res.value;
+    //   }
+    // }
 
     if (!nodeResult) {
       nodeResult = runNode(
@@ -376,7 +376,7 @@ export const runFlow = (
           } else {
             const execState = Ok({
               ...awaitedResult.value,
-              ...stateRegisterData,
+              // ...stateRegisterData,
             });
             executionStateStore.set(execId, execState);
             resolve(execState);
@@ -390,7 +390,7 @@ export const runFlow = (
     // 1.3 save registers
     const execState = Ok({
       ...nodeResult.value,
-      ...stateRegisterData,
+      // ...stateRegisterData,
     });
     executionStateStore.set(execId, execState);
     return execState;
