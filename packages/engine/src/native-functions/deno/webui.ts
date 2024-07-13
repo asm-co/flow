@@ -7,7 +7,7 @@ import {
 
 const getWebuiCompute: JsNodeComputeGenerator = (imports: RuntimeNodeImports) =>
   simpleNodeNativeCompute2NodeNativeCompute(({ node, inputs, tx, onRx }) => {
-    const bundles: Record<string, string> = node.properties['bundles'];
+    const bundles: Record<string, string> = node.staticInputs['bundles'];
     const jsText = Object.values(bundles)[0];
     const subFlowInputString = JSON.stringify(inputs['input']);
     // console.log('subFlowInputString', subFlowInputString);
@@ -54,7 +54,7 @@ const getWebuiCompute: JsNodeComputeGenerator = (imports: RuntimeNodeImports) =>
         tx(
           res.key,
           res.value.value,
-          Object.keys(node.properties['bundles'])[0]
+          Object.keys(node.staticInputs['bundles'])[0]
         );
       }
     });

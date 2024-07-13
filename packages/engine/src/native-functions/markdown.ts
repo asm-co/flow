@@ -5,7 +5,7 @@ const getMarkdownCompute: JsNodeComputeGenerator = (
   imports: RuntimeNodeImports
 ) =>
   simpleNodeNativeCompute2NodeNativeCompute(({ node, inputs }) => {
-    const tpl = imports.Handlebars.compile(node.properties.value);
+    const tpl = imports.Handlebars.compile(node.staticInputs.value);
     return {
       value: tpl(inputs),
     };

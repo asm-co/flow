@@ -3,7 +3,7 @@ import { simpleNodeNativeCompute2NodeNativeCompute } from '../utils';
 
 const jsonCompute: SimpleNodeNativeComputeFunction = ({ node }) => {
   return {
-    output: JSON.parse(node.properties.jsonString),
+    output: JSON.parse(node.staticInputs.jsonString),
   };
 };
 

@@ -235,7 +235,7 @@ export const runNode = (
     // } else if (node.resourceId === ReservedNodeResourceId.ExternalFlow) {
     if (node.resourceId === ReservedNodeResourceId.ExternalFlow) {
       proxyFlow = context.providers.getFlow(
-        (node.properties as ExternalFlowData).flowId
+        (node.staticInputs as ExternalFlowData).flowId
       );
       if (!proxyFlow) {
         throw new Error(`Flow ${nodeId} is not found`);

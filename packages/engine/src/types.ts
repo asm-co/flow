@@ -78,7 +78,7 @@ export type CompiledNode = {
   >;
   subFlows: Record<string, CompiledFlow>;
   resourceId: string;
-  properties: Record<string, any>;
+  // properties: Record<string, any>;
   asyncMode?: AsyncMode;
   staticInputs: Record<string, any>;
   dataOutputPortKeys: string[];

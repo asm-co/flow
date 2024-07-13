@@ -12,7 +12,7 @@ const webWorkerSpawnCompute: SimpleNodeNativeComputeFunction = ({
   onRx,
 }) => {
   console.log('webWorkerSpawnCompute', node, inputs);
-  const subFlowCode = Object.values(node.properties['bundles'])[0] as string;
+  const subFlowCode = Object.values(node.staticInputs['bundles'])[0] as string;
 
   const subFlowInputString = JSON.stringify(Object.values(inputs)[0]);
   const workerScript = `
@@ -32,7 +32,7 @@ const webWorkerSpawnCompute: SimpleNodeNativeComputeFunction = ({
       tx(
         e.data.key,
         e.data.value.value,
-        Object.keys(node.properties['bundles'])[0]
+        Object.keys(node.staticInputs['bundles'])[0]
       );
     }
   };

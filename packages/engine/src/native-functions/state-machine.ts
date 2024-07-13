@@ -11,7 +11,7 @@ const getStateMachineCompute: JsNodeComputeGenerator = (imports) =>
     //   .forEach((x) => {
     //     actions[x.key] = () => tx(x.key, null);
     //   });
-    const machine = toMachine(node.properties.value, {
+    const machine = toMachine(node.staticInputs.value, {
       // actions,
     });
     // console.log(machine);

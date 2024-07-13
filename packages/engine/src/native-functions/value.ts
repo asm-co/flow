@@ -3,7 +3,7 @@ import { simpleNodeNativeCompute2NodeNativeCompute } from '../utils';
 
 const propertyValueCompute: SimpleNodeNativeComputeFunction = ({ node }) => {
   return {
-    value: node.properties.value,
+    value: node.staticInputs.value,
   };
 };
 
