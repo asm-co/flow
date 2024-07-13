@@ -63,10 +63,10 @@ export const _denoWebui = webuiNode;
 export const _denoHttpServer = denoHttpServerNode;
 
 //simple compute => generators
-export const _string = propertyValueCompute;
-export const _number = propertyValueCompute;
-export const _boolean = propertyValueCompute;
-export const _null = propertyValueCompute;
+// export const _string = propertyValueCompute;
+// export const _number = propertyValueCompute;
+// export const _boolean = propertyValueCompute;
+// export const _null = propertyValueCompute;
 export const _image = propertyValueCompute;
 export const _select = selectCompute;
 export const _json = jsonCompute;
