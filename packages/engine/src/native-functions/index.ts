@@ -45,6 +45,7 @@ import stateMachineCompute from './state-machine';
 import mapCompute from './map';
 import markdownCompute from './markdown';
 import fromObjectCompute from './from-object';
+import constantCompute from './__constant';
 
 //compute generators
 export const _createElement = createElementNode;
@@ -105,3 +106,5 @@ export const _stateMachine = stateMachineCompute;
 export const _map = mapCompute;
 
 export const _markdown = markdownCompute;
+
+export const __CONSTANT = constantCompute;
